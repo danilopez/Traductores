@@ -73,3 +73,7 @@ void main(){
 
 	yyparse();
 }
+
+yyerror(char *s) {
+	printf("%s\n",s);
+}

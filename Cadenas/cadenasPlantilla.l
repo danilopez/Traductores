@@ -26,7 +26,7 @@ IDENTIFICADOR	[a-zA-Z][a-zA-Z0-9]*
 {CADENA}				{
 							// Hay que quitar las comillas
 							strcpy(yylval.texto,yytext + 1);
-							yylval.texto[strlen(yylval.texto - 1)] = '\0';
+							yylval.texto[strlen(yylval.texto) - 1] = '\0';
 							return CAD;
 						}
 [ \n\t]+		{;}
