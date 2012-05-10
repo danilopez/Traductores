@@ -1,0 +1,69 @@
+/* examen yacc avanzado grupo A*/
+
+%{
+#include "tablas.c"
+#include "string.h"
+#include "math.h"
+
+typedef struct {
+        char tipo;
+        union {
+              float valorv[3];
+              float valorn;
+	      }info;
+        }expresion;
+	
+simbolo *t=NULL;
+int i,error;
+int tmp;
+
+%}
+%union {
+       float valorv[3];
+       float valorn;
+       simbolo *ptr_simbolo;
+       expresion expresi;
+		 }
+
+%token <valorn> NUM
+%token <ptr_simbolo> ID
+%token ASIG 
+%type <expresi> expr 
+%type <valorv> vector
+
+%start prog
+
+
+%left '+' '-'
+%left '*'
+
+
+
+%%
+prog  : 
+      | prog  ID ASIG expr ';' {} 
+      | prog error ';'          {}
+      ;
+         
+expr   	: NUM			{}
+		| vector		{}
+		| ID			{}
+		| '|' expr '|'	{}
+		| expr '+' expr	{}
+		| expr '-' expr	{}
+		| expr '*' expr	{}   
+		;
+vector	: '(' NUM ',' NUM ',' NUM ')' 	{}
+	;
+%%
+#include "yaccal2.c"
+
+void main()
+{
+     yyparse();
+ //imprimir(t);    
+}
+void yyerror(char *s)
+{
+     printf("%s\n",s);
+}
